@@ -1,0 +1,15 @@
+# Upgraded Coding Agent: Authentic Intelligence & Self-Healing
+# Pinned core dependencies compatible with Python 3.11, 3.12, 3.13, and 3.14
+
+starlette>=0.40.0
+uvicorn>=0.30.0
+httpx>=0.27.0
+pytest>=8.0.0
+flake8>=7.0.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# Optional extended UI / SDK bindings (installed automatically in Docker image):
+# streamlit>=1.35.0
+# openai>=1.25.0
+# google-genai>=0.1.0

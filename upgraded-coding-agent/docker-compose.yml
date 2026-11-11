@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Primary Service: FastAPI/Starlette REST API & Interactive Tailwind Dashboard
+  coding-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: upgraded_coding_agent
+    ports:
+      - "8000:8000"
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-offline}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.5-flash}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - SANDBOX_TIMEOUT_SECONDS=15.0
+      - MAX_HEALING_ITERATIONS=4
+    restart: unless-stopped
+    volumes:
+      - ./agent:/app/agent
+      - ./sandbox:/app/sandbox
+      - ./api:/app/api
+      - ./ui:/app/ui
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # Secondary Service: Streamlit Control Interface
+  coding-agent-streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: upgraded_coding_agent_streamlit
+    command: ["streamlit", "run", "ui/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    ports:
+      - "8501:8501"
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-offline}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    depends_on:
+      - coding-agent
+    restart: unless-stopped

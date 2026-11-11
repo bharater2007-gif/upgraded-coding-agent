@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upgraded Coding Agent: Authentic Intelligence & Self-Healing</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            surface: {
+              900: '#0f172a',
+              800: '#1e293b',
+              700: '#334155',
+              600: '#475569',
+            }
+          },
+          fontFamily: {
+            mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'Monaco', 'monospace'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Marked.js for robust Markdown formatting in Chat -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="bg-surface-900 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-surface-700/60 bg-surface-800/80 backdrop-blur sticky top-0 z-50 px-6 py-3.5 flex items-center justify-between shadow-lg">
+    <div class="flex items-center space-x-3.5">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-indigo-500/30 shadow-md">
+        <i class="fa-solid fa-brain-circuit text-white text-lg"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-lg leading-tight tracking-tight flex items-center gap-2">
+          Upgraded Coding Agent
+          <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-mono">v2.5 Autonomous</span>
+        </h1>
+        <p class="text-xs text-slate-400">Foundations of AI & Authentic Intelligence • Course Project</p>
+      </div>
+    </div>
+
+    <!-- System Badges & Telemetry -->
+    <div class="flex items-center space-x-4">
+      <div id="llm-badge" class="flex items-center space-x-2 text-xs bg-surface-900/80 border border-surface-700 px-3 py-1.5 rounded-lg font-mono">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-slate-400">Model:</span>
+        <span id="active-model-name" class="text-emerald-400 font-semibold">Gemini 1.5 Flash</span>
+      </div>
+
+      <div id="status-badge" class="flex items-center space-x-2 text-xs bg-surface-900/80 border border-surface-700 px-3 py-1.5 rounded-lg font-mono">
+        <span class="text-slate-400">State:</span>
+        <span id="agent-state-label" class="text-indigo-400 font-bold uppercase">IDLE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Global Fallback Alert Banner -->
+  <div id="global-fallback-banner" class="hidden bg-gradient-to-r from-amber-950/90 via-amber-900/80 to-surface-800 border-b border-amber-500/70 text-amber-200 px-6 py-2.5 text-xs flex items-center justify-between shadow-md transition-all">
+    <div class="flex items-center space-x-3 font-mono">
+      <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+      <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm"></i>
+      <span id="fallback-banner-text" class="font-semibold text-amber-200">Live API busy — seamless failover to Simulation Engine active</span>
+    </div>
+    <span class="text-[11px] bg-amber-500/20 px-2.5 py-0.5 rounded border border-amber-500/40 text-amber-300 font-mono">Zero Interruption Guaranteed</span>
+  </div>
+
+  <!-- Main Grid Workspace -->
+  <main class="flex-1 p-6 grid grid-cols-12 gap-6 overflow-hidden max-w-[1920px] mx-auto w-full">
+
+    <!-- Column 1: Task Input, Presets & Controls (3 cols) -->
+    <aside class="col-span-12 lg:col-span-3 flex flex-col space-y-5">
+      
+      <!-- Objective Card -->
+      <div class="bg-surface-800 border border-surface-700/60 rounded-xl p-5 shadow-sm flex flex-col">
+        <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3 flex items-center justify-between">
+          <span><i class="fa-solid fa-terminal mr-2 text-indigo-400"></i>Coding Objective</span>
+          <span class="text-[11px] text-slate-400 font-normal">Spec</span>
+        </h2>
+
+        <!-- Preset Selector -->
+        <div class="mb-3">
+          <label class="block text-xs text-slate-400 mb-1.5">Academic Demo Scenario:</label>
+          <select id="scenario-selector" class="w-full bg-surface-900 border border-surface-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition-colors">
+            <option value="lru_cache">Scenario 1: LRU Cache (Eviction & Access Bug)</option>
+            <option value="rate_limiter">Scenario 2: Token Bucket Rate Limiter (Refill Logic)</option>
+            <option value="fibonacci">Scenario 3: Fibonacci Memoization & Edge Guard</option>
+            <option value="security_exploit">Scenario 4: Security Violation (AST Block & Guardrail)</option>
+            <option value="custom">Custom Objective...</option>
+          </select>
+        </div>
+
+        <textarea id="task-objective" rows="5" class="w-full bg-surface-900 border border-surface-700 rounded-lg p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-indigo-500 transition-colors resize-none leading-relaxed" placeholder="Describe the feature or bug to solve..."></textarea>
+
+        <!-- Configuration Switches -->
+        <div class="mt-4 pt-4 border-t border-surface-700/60 space-y-3">
+          <div class="flex items-center justify-between">
+            <label for="hitl-toggle" class="text-xs text-slate-300 flex items-center cursor-pointer">
+              <i class="fa-solid fa-user-shield text-indigo-400 mr-2"></i>
+              <span>Authentic HITL Review Gate</span>
+            </label>
+            <input type="checkbox" id="hitl-toggle" checked class="w-4 h-4 rounded text-indigo-600 bg-surface-900 border-surface-700 focus:ring-indigo-500">
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-300"><i class="fa-solid fa-arrows-rotate text-purple-400 mr-2"></i>Max Healing Retries:</span>
+            <span id="max-iter-label" class="text-xs font-mono text-indigo-400 font-bold">4</span>
+          </div>
+          <input type="range" id="max-iter-slider" min="1" max="6" value="4" class="w-full accent-indigo-500 h-1.5 bg-surface-900 rounded-lg cursor-pointer">
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-5 space-y-2">
+          <button id="btn-start" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 px-4 rounded-lg text-xs transition-all shadow-md shadow-indigo-600/30 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-play"></i>
+            <span>Initialize & Start Agent</span>
+          </button>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btn-step" disabled class="bg-surface-700/80 hover:bg-surface-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-200 py-2 px-3 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-forward-step"></i>
+              <span>Step Transition</span>
+            </button>
+            <button id="btn-auto" disabled class="bg-purple-600/80 hover:bg-purple-600 disabled:opacity-40 disabled:cursor-not-allowed text-white py-2 px-3 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-forward"></i>
+              <span>Auto Run</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Execution Telemetry -->
+      <div class="bg-surface-800 border border-surface-700/60 rounded-xl p-5 shadow-sm flex-1 flex flex-col">
+        <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3 flex items-center justify-between">
+          <span><i class="fa-solid fa-chart-simple mr-2 text-emerald-400"></i>Self-Healing Telemetry</span>
+          <span id="iteration-counter" class="text-xs font-mono text-slate-400">Iter: 0/4</span>
+        </h2>
+
+        <div class="grid grid-cols-2 gap-3 text-center my-2">
+          <div class="bg-surface-900 p-2.5 rounded-lg border border-surface-700">
+            <div class="text-[11px] text-slate-400">AST Security</div>
+            <div id="stat-security" class="text-sm font-mono font-bold text-slate-500 mt-1">Pending</div>
+          </div>
+          <div class="bg-surface-900 p-2.5 rounded-lg border border-surface-700">
+            <div class="text-[11px] text-slate-400">Flake8 Violations</div>
+            <div id="stat-flake8" class="text-sm font-mono font-bold text-slate-500 mt-1">0</div>
+          </div>
+          <div class="bg-surface-900 p-2.5 rounded-lg border border-surface-700">
+            <div class="text-[11px] text-slate-400">Unit Tests</div>
+            <div id="stat-tests" class="text-sm font-mono font-bold text-slate-500 mt-1">0 / 0</div>
+          </div>
+          <div class="bg-surface-900 p-2.5 rounded-lg border border-surface-700">
+            <div class="text-[11px] text-slate-400">Self-Heal Loops</div>
+            <div id="stat-reflections" class="text-sm font-mono font-bold text-slate-500 mt-1">0</div>
+          </div>
+        </div>
+
+        <!-- Task Plan Subtasks -->
+        <div class="mt-4 pt-3 border-t border-surface-700/60 flex-1 overflow-y-auto max-h-48">
+          <div class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">Decomposed Plan:</div>
+          <div id="subtasks-container" class="space-y-1.5 text-xs text-slate-400">
+            <div class="italic text-slate-500">Plan will appear after task initialization...</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Column 2: Cognitive Thought Loop & Logs (4 cols) -->
+    <section class="col-span-12 lg:col-span-4 flex flex-col space-y-5">
+      
+      <!-- Visual State Machine Flow -->
+      <div class="bg-surface-800 border border-surface-700/60 rounded-xl p-4 shadow-sm">
+        <h2 class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-diagram-project text-indigo-400"></i>
+          <span>Authentic Intelligence State Machine</span>
+        </h2>
+
+        <div class="flex items-center justify-between text-[10px] font-mono font-semibold overflow-x-auto py-1">
+          <div id="node-PLANNING" class="state-node px-2.5 py-1.5 rounded bg-surface-900 border border-surface-700 text-slate-400">PLAN</div>
+          <i class="fa-solid fa-angle-right text-surface-600 text-[10px]"></i>
+          <div id="node-CODING" class="state-node px-2.5 py-1.5 rounded bg-surface-900 border border-surface-700 text-slate-400">CODE</div>
+          <i class="fa-solid fa-angle-right text-surface-600 text-[10px]"></i>
+          <div id="node-SECURITY_CHECK" class="state-node px-2.5 py-1.5 rounded bg-surface-900 border border-surface-700 text-slate-400">SEC-AUDIT</div>
+          <i class="fa-solid fa-angle-right text-surface-600 text-[10px]"></i>
+          <div id="node-HITL_REVIEW" class="state-node px-2.5 py-1.5 rounded bg-surface-900 border border-surface-700 text-slate-400">HITL-GATE</div>
+          <i class="fa-solid fa-angle-right text-surface-600 text-[10px]"></i>
+          <div id="node-EXECUTING" class="state-node px-2.5 py-1.5 rounded bg-surface-900 border border-surface-700 text-slate-400">TEST</div>
+          <i class="fa-solid fa-angle-right text-surface-600 text-[10px]"></i>
+          <div id="node-REFLECTING" class="state-node px-2.5 py-1.5 rounded bg-surface-900 border border-surface-700 text-slate-400">REFLECT</div>
+        </div>
+      </div>
+
+      <!-- Real-Time Thought Loop Stream -->
+      <div class="bg-surface-800 border border-surface-700/60 rounded-xl p-5 shadow-sm flex-1 flex flex-col min-h-[450px]">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-microchip text-indigo-400"></i>
+            <span>Reasoning & Reflection Log</span>
+          </h2>
+          <span id="live-indicator" class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span> Idle
+          </span>
+        </div>
+
+        <div id="thought-stream" class="flex-1 bg-surface-900 rounded-lg p-3.5 overflow-y-auto space-y-3 font-mono text-xs border border-surface-700">
+          <div class="text-slate-500 italic">Agent cognitive trace will stream here in real time...</div>
+        </div>
+
+        <!-- Terminal Output Drawer -->
+        <div class="mt-4 pt-3 border-t border-surface-700/60">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide flex items-center gap-1.5">
+              <i class="fa-solid fa-terminal text-slate-400"></i> Sandbox Terminal (stdout/stderr)
+            </span>
+            <button id="btn-clear-terminal" class="text-[10px] text-slate-500 hover:text-slate-300">Clear</button>
+          </div>
+          <pre id="terminal-output" class="bg-black/60 text-emerald-400 p-2.5 rounded font-mono text-[11px] h-32 overflow-y-auto border border-surface-700 whitespace-pre-wrap leading-tight">No active subprocess outputs.</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Column 3: Authentic Intelligence Diff Viewer, HITL Gate & AI Chatbox (5 cols) -->
+    <section class="col-span-12 lg:col-span-5 flex flex-col space-y-5">
+      
+      <!-- HITL Interactive Approval Gate Banner -->
+      <div id="hitl-banner" class="hidden bg-gradient-to-r from-amber-950/40 via-surface-800 to-indigo-950/40 border-2 border-amber-500/60 rounded-xl p-4 shadow-xl">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm border border-amber-500/40">
+              <i class="fa-solid fa-hand"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-amber-300 uppercase tracking-wider">HITL Review Gate Activated</h3>
+              <p class="text-xs text-slate-300 mt-0.5">Authentic Intelligence requires explicit human consent before execution or commit.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 grid grid-cols-4 gap-2">
+          <button id="btn-hitl-approve" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-check"></i>
+            <span>Approve</span>
+          </button>
+          <button id="btn-hitl-modify" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-pen-to-square"></i>
+            <span>Edit Code</span>
+          </button>
+          <button id="btn-hitl-replan" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Re-Plan</span>
+          </button>
+          <button id="btn-hitl-reject" class="bg-rose-600 hover:bg-rose-500 text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-xmark"></i>
+            <span>Reject</span>
+          </button>
+        </div>
+
+        <!-- Optional Reviewer Feedback Input -->
+        <input type="text" id="hitl-feedback-input" placeholder="Operator feedback or guidance (optional)..." class="mt-2.5 w-full bg-surface-900/90 border border-surface-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500">
+      </div>
+
+      <!-- Main Workspace Viewer: Tabs for Diff, solution.py, test_solution.py, and Agent Copilot Chat -->
+      <div class="bg-surface-800 border border-surface-700/60 rounded-xl p-5 shadow-sm flex-1 flex flex-col min-h-[500px]">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-1.5">
+            <button id="tab-diff" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition-colors">
+              <i class="fa-solid fa-code-compare mr-1.5"></i>Patch Diff
+            </button>
+            <button id="tab-solution" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-surface-900 hover:bg-surface-700 text-slate-400 hover:text-slate-200 transition-colors">
+              <i class="fa-solid fa-file-code mr-1.5"></i>solution.py
+            </button>
+            <button id="tab-test" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-surface-900 hover:bg-surface-700 text-slate-400 hover:text-slate-200 transition-colors">
+              <i class="fa-solid fa-vial-circle-check mr-1.5"></i>test_solution.py
+            </button>
+            <button id="tab-chat" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-surface-900 hover:bg-surface-700 text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1.5">
+              <i class="fa-solid fa-comments text-indigo-400"></i>
+              <span>Agent Copilot Chat</span>
+              <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+            </button>
+          </div>
+
+          <span id="diff-file-badge" class="text-xs font-mono text-slate-400 bg-surface-900 px-2 py-1 rounded border border-surface-700">solution.py</span>
+        </div>
+
+        <!-- 1. Diff Viewer Container -->
+        <div id="view-diff" class="flex-1 bg-surface-900 rounded-lg p-3 font-mono text-xs overflow-auto border border-surface-700 leading-relaxed">
+          <div class="text-slate-500 italic p-4 text-center">No diff available. Initialize and execute an agent cycle.</div>
+        </div>
+
+        <!-- 2. Solution Code Editor Container -->
+        <div id="view-solution" class="hidden flex-1 bg-surface-900 rounded-lg p-3 font-mono text-xs overflow-auto border border-surface-700 flex flex-col">
+          <textarea id="solution-editor" class="w-full h-full bg-transparent text-emerald-400 font-mono text-xs focus:outline-none resize-none leading-relaxed" spellcheck="false"></textarea>
+        </div>
+
+        <!-- 3. Test Code Editor Container -->
+        <div id="view-test" class="hidden flex-1 bg-surface-900 rounded-lg p-3 font-mono text-xs overflow-auto border border-surface-700 flex flex-col">
+          <textarea id="test-editor" class="w-full h-full bg-transparent text-cyan-400 font-mono text-xs focus:outline-none resize-none leading-relaxed" spellcheck="false" readonly></textarea>
+        </div>
+
+        <!-- 4. Interactive AI Chatbox Container -->
+        <div id="view-chat" class="hidden flex-1 bg-surface-900 rounded-lg p-3.5 font-sans text-xs border border-surface-700 flex flex-col overflow-hidden">
+          
+          <!-- Chat Fallback Indicator Banner -->
+          <div id="chat-fallback-alert" class="hidden mb-2.5 bg-amber-950/70 border border-amber-500/80 text-amber-200 px-3 py-1.5 rounded-lg text-[11px] flex items-center gap-2 font-mono">
+            <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+            <span>Live API busy — seamless failover to Simulation Engine active.</span>
+          </div>
+
+          <!-- Quick Suggestion Prompt Chips -->
+          <div class="mb-2.5 flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px] shrink-0">
+            <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">Quick:</span>
+            <button class="chat-chip bg-surface-800 hover:bg-surface-700 border border-surface-700 text-slate-300 px-2.5 py-1 rounded-full whitespace-nowrap transition-colors" data-prompt="Explain this bug">💡 Explain this bug</button>
+            <button class="chat-chip bg-surface-800 hover:bg-surface-700 border border-surface-700 text-slate-300 px-2.5 py-1 rounded-full whitespace-nowrap transition-colors" data-prompt="How does the self-healing loop work?">🔄 How does self-healing work?</button>
+            <button class="chat-chip bg-surface-800 hover:bg-surface-700 border border-surface-700 text-slate-300 px-2.5 py-1 rounded-full whitespace-nowrap transition-colors" data-prompt="Refactor this function to be faster">⚡ Refactor to be faster</button>
+            <button class="chat-chip bg-surface-800 hover:bg-surface-700 border border-surface-700 text-slate-300 px-2.5 py-1 rounded-full whitespace-nowrap transition-colors" data-prompt="Explain the AST security check">🛡️ AST Security check</button>
+          </div>
+
+          <!-- Chat Messages Scroll Area -->
+          <div id="chat-messages" class="flex-1 overflow-y-auto space-y-3 pr-1 leading-relaxed">
+            <!-- Initial Greeting from Copilot -->
+            <div class="chat-message chat-agent flex items-start gap-2.5">
+              <div class="w-7 h-7 rounded-lg bg-indigo-600/30 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/40 text-xs">
+                <i class="fa-solid fa-robot"></i>
+              </div>
+              <div class="flex-1 bg-surface-800/90 border border-surface-700 rounded-xl p-3 text-slate-200">
+                <div class="font-bold text-[11px] text-indigo-400 mb-1 flex items-center justify-between">
+                  <span>Agent Copilot</span>
+                  <span class="text-[10px] text-slate-500 font-normal">Online</span>
+                </div>
+                <div class="prose prose-invert prose-xs text-xs">
+                  <p>Hello! I am your paired <strong>AI Coding Agent Copilot</strong>. I have full context of your current objective, code, test failures, and reflection diagnostics.</p>
+                  <p class="mt-1">Ask me anything about this task — click a suggestion chip above or type your prompt below!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Input Area -->
+          <div class="mt-2.5 pt-2 border-t border-surface-700/60 flex items-center gap-2 shrink-0">
+            <input type="text" id="chat-input" placeholder="Ask Copilot (e.g. 'Explain this bug', 'Refactor this function')..." class="flex-1 bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+            <button id="btn-chat-send" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2 rounded-lg text-xs transition-colors flex items-center gap-1.5 shadow-sm shadow-indigo-600/30">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Send</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Diagnostic Summary Footer -->
+        <div class="mt-4 pt-3 border-t border-surface-700/60 flex items-center justify-between text-xs text-slate-400 font-mono">
+          <div id="diff-stats" class="flex items-center space-x-3">
+            <span class="text-emerald-400">+0 additions</span>
+            <span class="text-rose-400">-0 deletions</span>
+          </div>
+          <div id="ast-scan-meta" class="text-[11px] text-slate-500">AST Security: Unaudited</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- Scripts -->
+  <script src="/static/diff.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+/* Custom Styling for Upgraded Coding Agent Dashboard */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #0b1120;
+}
+
+pre, code, textarea {
+  font-family: 'Fira Code', Menlo, Monaco, Consolas, monospace;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* State Machine Node Active Styling */
+.state-node {
+  transition: all 0.25s ease-in-out;
+}
+.state-node.active-node {
+  background-color: #4f46e5 !important;
+  color: #ffffff !important;
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+  transform: scale(1.05);
+}
+
+/* Diff Line Renderings */
+.diff-line {
+  display: flex;
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+.diff-line-number {
+  width: 38px;
+  text-align: right;
+  padding-right: 10px;
+  color: #64748b;
+  user-select: none;
+}
+.diff-line-content {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.diff-add {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border-left: 2px solid #10b981;
+}
+.diff-delete {
+  background-color: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border-left: 2px solid #f43f5e;
+}
+.diff-header {
+  color: #818cf8;
+  font-weight: 600;
+  background-color: rgba(99, 102, 241, 0.1);
+  padding: 4px;
+  border-radius: 4px;
+  margin: 4px 0;
+}
+.diff-context {
+  color: #94a3b8;
+}
+
+/* Thought log entries */
+.thought-card {
+  border-left: 3px solid #6366f1;
+  background: rgba(30, 41, 59, 0.5);
+  transition: all 0.2s ease;
+}
+.thought-card:hover {
+  background: rgba(30, 41, 59, 0.8);
+}
+.thought-card.phase-reflecting {
+  border-left-color: #f59e0b;
+}
+.thought-card.phase-completed {
+  border-left-color: #10b981;
+}
+.thought-card.phase-failed {
+  border-left-color: #ef4444;
+}
+
+/* Chatbox & Markdown Styling */
+.chat-message {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-user {
+  flex-direction: row-reverse;
+}
+
+.chat-bubble-user {
+  background-color: #4338ca;
+  color: #ffffff;
+  border: 1px solid #6366f1;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble-agent {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble-agent pre {
+  background-color: #090d16;
+  border: 1px solid #283548;
+  border-radius: 6px;
+  padding: 10px;
+  margin: 8px 0;
+  overflow-x: auto;
+  font-size: 11px;
+}
+
+.chat-bubble-agent code {
+  color: #38bdf8;
+  background-color: rgba(15, 23, 42, 0.6);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.chat-bubble-agent pre code {
+  color: #a5f3fc;
+  background-color: transparent;
+  padding: 0;
+}
+
+.chat-bubble-agent h1, .chat-bubble-agent h2, .chat-bubble-agent h3, .chat-bubble-agent h4 {
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.chat-bubble-agent ul, .chat-bubble-agent ol {
+  margin-left: 18px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  list-style-type: disc;
+}
+
+.chat-bubble-agent li {
+  margin-bottom: 2px;
+}
+
+.chat-reasoning {
+  border-left: 3px solid #6366f1;
+  background: rgba(15, 23, 42, 0.7);
+  border-radius: 6px;
+}
+
+.chat-reasoning summary {
+  user-select: none;
+}
+
+.chat-reasoning summary::-webkit-details-marker {
+  display: none;
+}

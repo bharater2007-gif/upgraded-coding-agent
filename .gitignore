@@ -1,0 +1,17 @@
+# Python & virtual environment
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest & Sandboxes
+.pytest_cache/
+.sandboxes/
+*.log
+
+# Environment variables
+.env
+
+# OS artifacts
+.DS_Store
+Thumbs.db
